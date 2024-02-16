@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"github.com/andres-mfv/chat-backend/src/room"
+	"github.com/andres-mfv/chat-backend/src/service"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -12,6 +14,8 @@ func main() {
 	hub := newHub()
 	go hub.run()
 
+	roomService := service.NewRoomService()
+
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -21,6 +25,29 @@ func main() {
 	r.GET("/ws", func(c *gin.Context) {
 		serveWs(hub, c)
 	})
+	r.POST("/join", func(c *gin.Context) {
+
+	})
+
+	r.POST("/rooms/create", func(c *gin.Context) {
+		req := room.Request{}
+		if err := c.BindJSON(&req); err != nil {
+			_ = c.AbortWithError(http.StatusBadRequest, err)
+			return
+		}
+		err := roomService.CreateRoom(c, &req)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "error",
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
+
 	err := r.Run()
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)

@@ -14,15 +14,11 @@ const (
 	dbname   = "yourdbname"
 )
 
-type DB interface {
-	GetInstance() (DB, error)
+type PostgresDB struct {
+	DB *sql.DB
 }
 
-type postgresDB struct {
-	db *sql.DB
-}
-
-func (p *postgresDB) GetInstance() (DB, error) {
+func NewPostgresDB() *PostgresDB {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
@@ -41,11 +37,7 @@ func (p *postgresDB) GetInstance() (DB, error) {
 
 	fmt.Println("Successfully connected!")
 
-	return &postgresDB{
-		db: db,
-	}, nil
-}
-
-func NewPostgresDB() DB {
-	return &postgresDB{}
+	return &PostgresDB{
+		DB: db,
+	}
 }

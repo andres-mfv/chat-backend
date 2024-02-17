@@ -20,5 +20,8 @@ func (r *roomService) CreateRoom(ctx context.Context, req *room.Request) error {
 }
 
 func NewRoomService() RoomService {
-	return &roomService{}
+	roomMng := room.NewRoomManager()
+	return &roomService{
+		roomMng: roomMng,
+	}
 }

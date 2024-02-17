@@ -13,7 +13,7 @@ type Manager interface {
 }
 
 type roomManager struct {
-	dbInstance db.PostgresDB
+	dbInstance *db.PostgresDB
 }
 
 func (r *roomManager) CreateRoom(ctx context.Context, req *Request) (*Room, error) {
@@ -41,5 +41,7 @@ func (r *roomManager) JoinRoom() error {
 }
 
 func NewRoomManager() Manager {
-	return &roomManager{}
+	return &roomManager{
+		dbInstance: db.NewPostgresDB(),
+	}
 }

@@ -4,14 +4,16 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+
+	_ "github.com/lib/pq"
 )
 
 const (
 	host     = "localhost"
-	port     = 5432 // Default port for PostgreSQL
-	user     = "yourusername"
-	password = "yourpassword"
-	dbname   = "yourdbname"
+	port     = 55432
+	user     = "postgres"
+	password = "postgres"
+	dbname   = "postgres"
 )
 
 type PostgresDB struct {

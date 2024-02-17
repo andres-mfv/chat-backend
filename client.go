@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
+	"github.com/gin-gonic/gin"
 	"log"
-	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -118,8 +118,8 @@ func (c *Client) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
+func serveWs(hub *Hub, c *gin.Context) {
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err)
 		return

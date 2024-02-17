@@ -29,7 +29,6 @@ func NewPostgresDB() *PostgresDB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
 
 	// Check the connection
 	err = db.Ping()

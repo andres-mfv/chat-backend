@@ -17,7 +17,8 @@ type roomManager struct {
 }
 
 func (r *roomManager) CreateRoom(ctx context.Context, req *Request) (*Room, error) {
-	exec, err := r.dbInstance.DB.Exec("INSERT INTO rooms (name, create_by) VALUES ($1, $2)", req.Name, req.CreateBy)
+	exec, err := r.dbInstance.DB.Exec("INSERT INTO rooms (name, type, created_by) VALUES ($1, $2, $3)",
+		req.Name, req.Type, req.CreateBy)
 	if err != nil {
 		return nil, err
 	}
